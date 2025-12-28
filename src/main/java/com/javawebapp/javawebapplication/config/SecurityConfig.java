@@ -22,9 +22,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable) // Disable CSRF for now (we’re building an API)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Allow register/login without auth
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml").permitAll() // Allow register/login without auth
                         .anyRequest().authenticated() // Everything else must be authenticated
                 );
+
         return http.build(); // Build the security filter chain object
     }
 }
